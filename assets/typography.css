@@ -1,0 +1,25 @@
+h2,h3,h4,h6{ color : rgb(159, 241, 253);
+    height: 30px;
+    line-height: 40px;
+    padding-left: 40px;}
+
+h5{color: yellow}
+
+p{ color: white;
+    height: 20px;
+    line-height: 20px;
+    padding-left: 40px;}
+
+.Select, .Select div, .Select input {
+    background-color: rgb(159, 241, 253);
+    color: rgb(36, 40, 40);
+    font: bolder;
+    padding-left: 40px;
+    padding-right: 40px;
+    }
+.dash-spreadsheet{padding-left: 40px;
+    padding-right: 40px;
+}
+
+.test {
+    visibility: hidden}
