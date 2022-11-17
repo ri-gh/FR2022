@@ -10,7 +10,6 @@ import plotly.express as px
 df = pd.read_csv('last_df.csv')
 
 nom_list = df['Nom'].unique().tolist()
-
 result_France = pd.DataFrame(round(df.groupby('Nom')['Voix'].sum()/df['Voix'].sum()*100,2))
 
 table_result_France=pd.DataFrame()
@@ -81,7 +80,7 @@ figFrance = px.choropleth_mapbox(
     custom_data=['Nom','Voix','Departement','Code Departement']
    )
 
-figFrance.update_layout(
+figFrance.update_layout(#mapbox_style="open-street-map", #to make the style of the map like OSM
     mapbox_style="white-bg",
     mapbox_layers=[
         {
@@ -119,8 +118,8 @@ app.scripts.config.serve_locally = True
 
 dash.register_page(__name__)
 
-layout = html.Div(children=[html.Div(               
-                dbc.Row(
+layout = html.Div(children=[html.Div(                 # Alignement vertical de l'image et de l'accueil
+            dbc.Row(
                 [   #logo
                     dbc.Col(html.Img(src=logo, height="40px", style={'padding-left': '20px'})),
                                     ]),id="analysis"),
@@ -197,7 +196,7 @@ def result_cand(nom : str in nom_list):
     
 def display_choropleth(nom):
     df_cand = df_dep[df_dep['Nom'] == nom].reset_index(drop=True)
-    df_cand = df_cand.iloc[0:96]
+    df_cand = df_cand.iloc[0:96] #to have the dept code from 01 to 95 (number of french dept)
 
     fig = px.choropleth_mapbox(
         df_cand,
@@ -215,7 +214,7 @@ def display_choropleth(nom):
         opacity=0.8,
         custom_data=['Nom','Voix','Departement','Code Departement']
     )
-    fig.update_layout(mapbox_style="white-bg", #to make the style of the map a white background replace by 'white-bg'
+    fig.update_layout(mapbox_style="white-bg",
     mapbox_layers=[
         {
             "below": 'traces',
@@ -225,7 +224,7 @@ def display_choropleth(nom):
                 "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
             ]
         }
-      ], 
+      ], #to make the style of the map a white background replace by 'white-bg'
     legend = dict(bgcolor = 'rgb(159, 241, 253)'),
     title_font_color="rgb(159, 241, 253)",
         legend_title_font_color="black",
@@ -268,6 +267,7 @@ def vote_candidat_dep(nom):
     fig.layout.xaxis.color = 'rgb(159, 241, 253)'
 
     fig.update_traces(
+    #marker_color= res_cand_dep['Voix'],
     hovertemplate="<br>".join([
             "Candidate: {}".format(nom),
             "Departement: %{x}",
@@ -280,7 +280,7 @@ def vote_candidat_dep(nom):
     dash.dependencies.Output("top15-cities-div", "children"),
     dash.dependencies.Input("candidate", "value"))
     
-def top12_cities_list(nom : str in nom_list):
+def top15_cities_list(nom : str in nom_list):
     return html.P(children=f"Here is a list of 15 cities where candidate {nom} got top scores")
 
 
@@ -289,26 +289,21 @@ def top12_cities_list(nom : str in nom_list):
     dash.dependencies.Output("top15-cities-table", "columns"),
     dash.dependencies.Input("candidate", "value"))
 
-def top30_cities_table(nom : str in nom_list):
+def top15_cities_table(nom : str in nom_list):
     dfcand = df[df['Nom'] == nom].reset_index(drop = True)
 
-    stats = round(dfcand.groupby(['Libellé de la commune','Libellé du département','data_gps','Code du département'])['Voix'].sum()/df.groupby('Libellé de la commune')['Voix'].sum()*100,2)
+    stats = round(dfcand.groupby(['Libellé de la commune','Libellé du département','Code du département'])['Voix'].sum()/df.groupby('Libellé de la commune')['Voix'].sum()*100,2)
     stats15 = pd.DataFrame(stats.nlargest(n=15))
     stats15['Libellé de la commune'] = str
     stats15['Libellé du département'] = str
-    stats15['data_gps'] = str
     stats15['Code du département'] = str
 
-    list_dept_to_rem = ['ZA', 'ZB', 'ZC','ZD', 'ZM', 'ZN', 'ZP', 'ZS', 'ZW', 'ZX', 'ZZ']
-    for i in range (0,len(stats15)):
-        if stats15['Code du département'][i] in list_dept_to_rem:
-            stats15['data_gps'][i] = stats15['data_gps'][i][:-3]
+
 
     for i in range (0,len(stats15)):
         stats15['Libellé de la commune'][i] =stats15.index[i][0]
         stats15['Libellé du département'][i] =stats15.index[i][1]
-        stats15['data_gps'][i] = stats15.index[i][2]
-        stats15['Code du département'][i] = stats15.index[i][3]
+        stats15['Code du département'][i] = stats15.index[i][2]
 
     stats15 = stats15.reset_index(drop = True)
     
