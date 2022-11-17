@@ -52,7 +52,7 @@ app.scripts.config.serve_locally = True
 dash.register_page(__name__)
 
 
-layout = html.Div(children=[    html.Div(                
+layout = html.Div(children=[    html.Div(                 # Alignement vertical de l'image et de l'acceuil
             dbc.Row(
                 [   #logo
                     dbc.Col(html.Img(src=logo, height="40px", style={'padding-left': '20px'})),
@@ -294,6 +294,7 @@ def resultdeptabst(deptmt: str in dept_list):
     fig.layout.yaxis.color = 'rgb(159, 241, 253)'
     fig.layout.xaxis.color = 'rgb(159, 241, 253)'
     fig.update_traces(
+    #marker_color= test2['% Abs/Ins'],
     hovertemplate="<br>".join(["Department: {}".format(deptmt),
     "City: %{label}",
     "Abstention : %{y}%"]))
@@ -360,7 +361,8 @@ def resultcity4dep(city: str in city_list):
 
     fig.update_xaxes(color="rgb(159, 241, 253)") #change color of xaxes labels
     fig.update_yaxes(color="rgb(159, 241, 253)") #change color of yaxes labels
-    fig.update_layout( 
+    fig.update_layout( # Add annotations in the center of the donut pies & in the bar chart graph
+
     xaxis={'categoryorder':'total descending'},
     yaxis_title="Score (%)",
     paper_bgcolor="black", #to change the background color of the figure
@@ -473,6 +475,7 @@ def resultcity4dep(city: str in city_list):
         column_widths=[0.5, 0.5],
         row_heights=[0.5],
         specs=[[{"type": "pie"}, {"type": "bar"}]],)
+        #subplot_titles=("Votes results for city of {} in departement of {} ({})".format(city,dfcity['Libellé du département'].values[0],dfcity['Code du département'].values[0]), "Votes results for city of {} in departement of {} ({})".format(city,dfcity['Libellé du département'].values[0],dfcity['Code du département'].values[0]))) #to add a title to each subplot
 
     fig.add_trace(go.Pie(labels=test.index,
                                 values=test['Voix'],
@@ -506,6 +509,7 @@ def resultcity4dep(city: str in city_list):
     showlegend=True,
     legend=dict(font=dict(color="rgb(159, 241, 253)")), #to change color of the legend 
                  title = "Votes results for city of {} in departement of {} ({})".format(city,dfcity['Libellé du département'].values[0],dfcity['Code du département'].values[0]),
+                #title = "2022 french presidential elections first round final results in {}".format(city),
                 title_font_color="rgb(159, 241, 253)") #to change the color of the figure title
     fig.update_annotations(font=dict(family="Helvetica", size=10,color="rgb(159, 241, 253)"))#to change the subplot title colour
 
