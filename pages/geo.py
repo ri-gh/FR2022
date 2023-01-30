@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import dash_bootstrap_components as dbc
 
 
-df = pd.read_csv('df_global.csv')
+#df = pd.read_csv('df_global.csv')
 
 city_list = df['Libellé de la commune'].unique().tolist()
 dept_list = df['Libellé du département'].unique().tolist()
