@@ -46,7 +46,7 @@ df_global =  df_global[['Code du département', 'Libellé du département',
        'Libellé de la commune','Nom','Voix', '% Abs/Ins', '% Blancs/Vot', '% Nuls/Vot',
        '% Exp/Vot', '% Voix/Ins', '% Voix/Exp']]
 
-
+df = df_global
 app = Dash(__name__,use_pages=True,
 external_stylesheets=[dbc.themes.CYBORG])
 app.config.suppress_callback_exceptions = True
