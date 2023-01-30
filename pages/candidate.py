@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.express as px
 
 
-df = pd.read_csv('df_global.csv')
+#df = pd.read_csv('df_global.csv')
 
 nom_list = df['Nom'].unique().tolist()
 result_France = pd.DataFrame(round(df.groupby('Nom')['Voix'].sum()/df['Voix'].sum()*100,2))
