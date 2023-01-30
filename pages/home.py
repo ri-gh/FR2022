@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 
 
 
-#df = pd.read_csv('df_global.csv')
+df = pd.read_csv('df_global.csv')
 result_France = pd.DataFrame(round(df.groupby('Nom')['Voix'].sum()/df['Voix'].sum()*100,2))
 
 
